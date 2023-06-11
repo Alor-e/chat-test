@@ -66,24 +66,20 @@
             // The URL to your API endpoint
             let url = 'https://57bc-173-176-45-186.ngrok.io/chatbot_test/ask'; 
 
-            let body = JSON.stringify({
+            let body = {
                 "query": userInput
-            });
+            };
 
             // Make the POST request
             try {
                 let response = await axios.post(url, body);
-                if (response.ok) { 
-                    let jsonResponse = await response.json();
 
-                    // Append bot response to chatbox
-                    let botMessage = document.createElement('p');
-                    botMessage.className = 'botMessage';
-                    botMessage.textContent = "Bot: " + jsonResponse.response;
-                    chatBox.appendChild(botMessage);
-                } else {
-                    throw new Error("HTTP-Error: " + response.status);
-                }
+                // Append bot response to chatbox
+                let botMessage = document.createElement('p');
+                botMessage.className = 'botMessage';
+                botMessage.textContent = "Bot: " + response.data.response;
+                chatBox.appendChild(botMessage);
+
             } catch (error) {
                 console.error("Failed to fetch: ", error);
                 let errorMessage = document.createElement('p');
@@ -91,6 +87,11 @@
                 errorMessage.textContent = "Bot: I'm sorry, but I can't fetch the response right now.";
                 chatBox.appendChild(errorMessage);
             }
+
+    // Scroll to the bottom of the chatbox
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 
             // Scroll to the bottom of the chatbox
             chatBox.scrollTop = chatBox.scrollHeight;
